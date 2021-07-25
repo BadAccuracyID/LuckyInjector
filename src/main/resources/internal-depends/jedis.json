@@ -4,8 +4,8 @@
     "url": "https://repo1.maven.org/maven2/org/apache/commons/commons-pool2/2.9.0/commons-pool2-2.9.0.jar"
   },
   {
-    "name": "jedis-3.3.0.jar",
-    "url": "https://repo1.maven.org/maven2/redis/clients/jedis/3.3.0/jedis-3.3.0.jar"
+    "name": "jedis-3.6.0.jar",
+    "url": "https://repo1.maven.org/maven2/redis/clients/jedis/3.6.0/jedis-3.6.0.jar"
   },
   {
     "name": "gson-2.8.6.jar",
