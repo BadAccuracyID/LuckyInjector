@@ -6,9 +6,5 @@
   {
     "name": "relocated-netty-all-4.1.51.jar",
     "url": "https://github.com/Lucky-Development-Department/Jar-Repository/raw/master/repo/netty/relocated-netty-all-4.1.51.jar"
-  },
-  {
-    "name": "mongo-java-driver-3.12.10.jar",
-    "url": "https://repo1.maven.org/maven2/org/mongodb/mongo-java-driver/3.12.10/mongo-java-driver-3.12.10.jar"
   }
 ]

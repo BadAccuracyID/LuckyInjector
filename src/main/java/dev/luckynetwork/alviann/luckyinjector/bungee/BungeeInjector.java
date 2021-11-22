@@ -4,7 +4,6 @@ import com.github.alviannn.sqlhelper.SQLBuilder;
 import com.github.alviannn.sqlhelper.SQLHelper;
 import dev.luckynetwork.alviann.luckyinjector.bungee.commands.MainCMD;
 import dev.luckynetwork.alviann.luckyinjector.loader.Loader;
-import dev.luckynetwork.alviann.luckyinjector.updater.Updater;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -15,50 +14,26 @@ import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.concurrent.TimeUnit;
 
 public class BungeeInjector extends Plugin {
 
-    @Getter private static BungeeInjector instance;
-    @Getter private Updater updater;
+    @Getter
+    private static BungeeInjector instance;
 
-    @Getter private File configFile;
-    @Getter private Configuration config;
+    @Getter
+    private File configFile;
+    @Getter
+    private Configuration config;
 
     @SneakyThrows
     @Override
     public void onEnable() {
         instance = this;
-        updater = new Updater(this.getLogger());
 
         BungeeInjector.loadEarly();
 
         Loader.initConfig(BungeeInjector.class);
         this.reloadConfig();
-
-        // auto update task
-        this.getProxy().getScheduler().schedule(this, () -> {
-            if (!this.isAutoUpdate())
-                return;
-
-            updater.fetchUpdate().whenComplete((result, error) -> {
-                if (error != null) {
-                    System.err.println(error.getMessage());
-                    return;
-                }
-
-                if (!result)
-                    return;
-                if (!updater.canUpdate())
-                    return;
-
-                try {
-                    updater.initiateUpdate(instance.getDataFolder().getParentFile()).join();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-        }, 1L, 30L, TimeUnit.SECONDS);
 
         PluginManager manager = this.getProxy().getPluginManager();
         manager.registerCommand(this, new MainCMD("luckyinjector"));

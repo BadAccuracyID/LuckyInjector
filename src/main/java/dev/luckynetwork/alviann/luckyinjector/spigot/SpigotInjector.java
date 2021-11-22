@@ -4,10 +4,8 @@ import com.github.alviannn.sqlhelper.SQLBuilder;
 import com.github.alviannn.sqlhelper.SQLHelper;
 import dev.luckynetwork.alviann.luckyinjector.loader.Loader;
 import dev.luckynetwork.alviann.luckyinjector.spigot.commands.MainCMD;
-import dev.luckynetwork.alviann.luckyinjector.updater.Updater;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,39 +14,18 @@ import java.io.File;
 
 public class SpigotInjector extends JavaPlugin {
 
-    @Getter private static SpigotInjector instance;
-    @Getter private Updater updater;
+    @Getter
+    private static SpigotInjector instance;
 
     @SneakyThrows
     @Override
     public void onEnable() {
         instance = this;
-        updater = new Updater(this.getLogger());
 
         SpigotInjector.loadEarly();
 
         Loader.initConfig(SpigotInjector.class);
         this.reloadConfig();
-
-        // auto update task
-        Bukkit.getScheduler().runTaskTimer(this, () -> {
-            if (!this.isAutoUpdate())
-                return;
-
-            updater.fetchUpdate().whenComplete((result, error) -> {
-                if (error != null) {
-                    System.err.println(error.getMessage());
-                    return;
-                }
-
-                if (!result)
-                    return;
-                if (!updater.canUpdate())
-                    return;
-
-                updater.initiateUpdate(instance.getDataFolder().getParentFile()).join();
-            });
-        }, 20L, 600L);
 
         this.getCommand("luckyinjector").setExecutor(new MainCMD());
     }
